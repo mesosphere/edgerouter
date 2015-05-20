@@ -724,11 +724,6 @@ def get_arg_parser():
                         help="Marathon endpoint, eg. " +
                              "-m http://marathon1:8080 " +
                              "-m http://marathon2:8080")
-    log_socket = "/var/run/syslog" if sys.platform == "darwin" else "/dev/log"
-    parser.add_argument("--syslog-socket",
-                        help="Socket to write syslog messages to",
-                        default=log_socket
-                        )
     parser.add_argument("--ssl-cert",
                         help="Enables HTTP virtual host proxying." +
                              "Specifies the location of ssl cert to use for " +
@@ -752,16 +747,12 @@ def get_arg_parser():
     return parser
 
 
-def setup_logging(syslog_socket):
+def setup_logging():
     logger.setLevel(logging.DEBUG)
 
-    syslogHandler = SysLogHandler(args.syslog_socket)
     consoleHandler = logging.StreamHandler()
     formatter = logging.Formatter('%(name)s: %(message)s')
-    syslogHandler.setFormatter(formatter)
     consoleHandler.setFormatter(formatter)
-    # syslogHandler.setLevel(logging.ERROR)
-    logger.addHandler(syslogHandler)
     logger.addHandler(consoleHandler)
 
 
@@ -770,7 +761,7 @@ if __name__ == '__main__':
     args = get_arg_parser().parse_args()
 
     # Setup logging
-    setup_logging(args.syslog_socket)
+    setup_logging()
 
     # Marathon API connector
     marathon = Marathon(args.marathon)
