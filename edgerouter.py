@@ -24,7 +24,7 @@ Configuration:
   Environment Variables:
     EDGEROUTER_{n}_GROUP
       Only edgerouter instances which are members of the given group will
-      point to the service. Service routers with the gorup '*' will collect all
+      point to the service. Service routers with the group '*' will collect all
       groups.
 
     EDGEROUTER_{n}_PORT
